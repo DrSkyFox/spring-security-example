@@ -8,7 +8,7 @@ public class PathController {
 
     @RequestMapping("/login")
     public String list() {
-        return "loginPage";
+        return "home";
     }
 
 

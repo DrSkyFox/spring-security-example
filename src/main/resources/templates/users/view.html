@@ -24,7 +24,7 @@
 		<dd id="email" th:text="${user.email}">Email</dd>
 	</dl>
 	<div class="pull-left">
-		<a href="users" th:href="@{'/delete/' + ${user.id}}"> delete </a> | <a href="form.html" th:href="@{'/modify/' + ${user.id}}"> modify </a>
+		<a href="user" th:href="@{'/delete/' + ${user.id}}"> delete </a> | <a href="form.html" th:href="@{'/modify/' + ${user.id}}"> modify </a>
 	</div>
 </div>
 </body>

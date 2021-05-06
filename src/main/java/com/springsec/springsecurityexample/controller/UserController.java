@@ -32,7 +32,7 @@ public class UserController {
     @RequestMapping
     public ModelAndView list() {
         Iterable<User> users = this.userRepository.findAll();
-        return new ModelAndView("users/list", "users", users);
+        return new ModelAndView("home", "users", users);
     }
 
 
