@@ -3,7 +3,7 @@ package com.springsec.springsecurityexample.persists;
 
 import com.springsec.springsecurityexample.model.User;
 
-public interface UserRepository {
+public interface UserRepository extends JpaRepository {
 
     Iterable<User> findAll();
 
@@ -12,5 +12,7 @@ public interface UserRepository {
     User findUser(Long id);
 
     void deleteUser(Long id);
+
+    User findByEmail(String email);
 
 }

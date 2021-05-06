@@ -16,15 +16,6 @@
             <form id="user" th:action="@{/(form)}" th:object="${user}" action="#" method="post">
 
 
-<!--				<div class="form-group">-->
-<!--					<label>User</label>-->
-<!--					<input th:type="text" th:field="">-->
-<!--				</div>-->
-
-<!--				<div class="form-group">-->
-<!--					<label>email</label>-->
-<!--				</div>-->
-
 
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-error">
                     <p th:each="error : ${#fields.errors('*')}" th:text="${error}">Validation error</p>

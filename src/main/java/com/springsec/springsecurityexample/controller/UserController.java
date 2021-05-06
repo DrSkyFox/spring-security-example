@@ -64,7 +64,7 @@ public class UserController {
 
     // the form
 
-    @RequestMapping(params = "form", method = RequestMethod.GET)
+    @RequestMapping(value = "/create",params = "form", method = RequestMethod.GET)
     public String createForm(@ModelAttribute User user) {
         return "users/form";
     }
