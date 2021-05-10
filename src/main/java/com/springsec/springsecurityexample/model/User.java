@@ -25,6 +25,9 @@ public class User {
     @Column
     private Calendar created;
 
+    @Column
+    private Boolean enabled;
+
     public User(String email, String password, Calendar created) {
         this.email = email;
         this.password = password;
@@ -73,5 +76,11 @@ public class User {
         this.password = password;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
 
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
 }

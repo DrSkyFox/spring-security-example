@@ -21,15 +21,17 @@ public class UserRepr {
     @NotEmpty(message = "Password confirmation is required.")
     private String passwordConfirmation;
 
-    @Column
     private Calendar created = Calendar.getInstance();
 
+    private Boolean enabled;
 
-    public UserRepr(String email, String password, String passwordConfirmation, Calendar created) {
+
+    public UserRepr(String email, String password, String passwordConfirmation, Calendar created, Boolean enabled) {
         this.email = email;
         this.password = password;
         this.passwordConfirmation = passwordConfirmation;
         this.created = created;
+        this.enabled = enabled;
     }
 
     public UserRepr(User user) {
@@ -37,6 +39,7 @@ public class UserRepr {
         this.password = user.getPassword();
         this.passwordConfirmation = null;
         this.created = user.getCreated();
+        this.enabled = user.getEnabled();
     }
 
     public UserRepr() {
@@ -82,8 +85,23 @@ public class UserRepr {
         this.passwordConfirmation = passwordConfirmation;
     }
 
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
-        return "User{" + "id=" + id + ", email='" + email + '\'' + ", password='" + password + '\'' + ", passwordConfirmation='" + passwordConfirmation + '\'' + ", created=" + created + '}';
+        return "UserRepr{" +
+                "id=" + id +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", passwordConfirmation='" + passwordConfirmation + '\'' +
+                ", created=" + created +
+                ", enabled=" + enabled +
+                '}';
     }
 }
