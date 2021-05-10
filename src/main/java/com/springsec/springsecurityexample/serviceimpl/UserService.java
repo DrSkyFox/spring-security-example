@@ -1,7 +1,8 @@
-package com.springsec.springsecurityexample.service;
+package com.springsec.springsecurityexample.serviceimpl;
 
 import com.springsec.springsecurityexample.model.User;
 import com.springsec.springsecurityexample.persists.UserRepository;
+import com.springsec.springsecurityexample.service.IUserService;
 import com.springsec.springsecurityexample.validation.EmailExistsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,11 +10,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService implements IUserService {
 
+
     @Autowired
     private UserRepository repository;
 
     @Override
-    public User registerNewUser(final User user) throws EmailExistsException {
+    public User registerNewUser(User user) throws EmailExistsException {
         if (emailExist(user.getEmail())) {
             throw new EmailExistsException("There is an account with that email address: " + user.getEmail());
         }
@@ -35,5 +37,4 @@ public class UserService implements IUserService {
         }
         return repository.save(user);
     }
-
 }

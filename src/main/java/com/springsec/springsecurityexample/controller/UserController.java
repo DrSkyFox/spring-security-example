@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Calendar;
 
 
 @Controller
@@ -46,6 +47,7 @@ public class UserController {
         if (result.hasErrors()) {
             return new ModelAndView("users/form", "formErrors", result.getAllErrors());
         }
+        user.setCreated(Calendar.getInstance());
         user = this.userRepository.save(user);
         redirect.addFlashAttribute("globalMessage", "Successfully created a new user");
         return new ModelAndView("redirect:/{user.id}", "user.id", user.getId());
@@ -53,7 +55,7 @@ public class UserController {
 
     @RequestMapping(value = "delete/{id}")
     public ModelAndView delete(@PathVariable("id") Long id) {
-        this.userRepository.deleteUser(id);
+        this.userRepository.deleteById(id);
         return new ModelAndView("redirect:/");
     }
 
@@ -62,7 +64,6 @@ public class UserController {
         return new ModelAndView("users/form", "user", user);
     }
 
-    // the form
 
     @RequestMapping(value = "/create",params = "form", method = RequestMethod.GET)
     public String createForm(@ModelAttribute User user) {

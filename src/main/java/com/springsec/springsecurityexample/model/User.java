@@ -1,20 +1,45 @@
 package com.springsec.springsecurityexample.model;
 
+import com.springsec.springsecurityexample.representative.UserRepr;
+
 import java.util.Calendar;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty(message = "Username is required.")
-    private String username;
-
-    @NotEmpty(message = "Email is required.")
+    @Column(length = 64)
     private String email;
 
-    private Calendar created = Calendar.getInstance();
+    @Column(length = 512)
+    private String password;
+
+    @Column
+    private Calendar created;
+
+    public User(String email, String password, Calendar created) {
+        this.email = email;
+        this.password = password;
+        this.created = created;
+    }
+
+    public User(UserRepr userRepr) {
+        this.email = userRepr.getEmail();
+        this.password = userRepr.getPassword();
+        this.created = userRepr.getCreated();
+    }
+
+
+    public User() {
+    }
 
     public Long getId() {
         return this.id;
@@ -32,19 +57,21 @@ public class User {
         this.created = created;
     }
 
-    public String getUsername() {
-        return this.username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getEmail() {
-        return this.email;
+        return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(final String password) {
+        this.password = password;
+    }
+
+
 }
