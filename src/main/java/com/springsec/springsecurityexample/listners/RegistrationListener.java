@@ -6,6 +6,8 @@ import java.util.UUID;
 import com.springsec.springsecurityexample.events.OnRegistrationCompleteEvent;
 import com.springsec.springsecurityexample.model.User;
 import com.springsec.springsecurityexample.service.IUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.Environment;
@@ -16,6 +18,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
+
+    private static final Logger logger = LoggerFactory.getLogger(RegistrationListener.class);
 
     @Autowired
     private IUserService service;
@@ -34,13 +38,17 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     }
 
     private void confirmRegistration(final OnRegistrationCompleteEvent event) {
+        logger.info("User registration complete. Send confirm message to email: {}");
         final User user = event.getUser();
         final String token = UUID.randomUUID()
             .toString();
+        logger.info("User registration complete. Send confirm message to email: email info: {},  token : {}", user.getEmail(), token);
         service.createVerificationTokenForUser(user, token);
 
         final SimpleMailMessage email = constructEmailMessage(event, user, token);
+        logger.info("mail send...................................");
         mailSender.send(email);
+        logger.info("mail sent..................................");
     }
 
     //
@@ -49,6 +57,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         final String recipientAddress = user.getEmail();
         final String subject = "Registration Confirmation";
         final String confirmationUrl = event.getAppUrl() + "/registrationConfirm?token=" + token;
+        logger.info("confirm url: {}", confirmationUrl);
         final SimpleMailMessage email = new SimpleMailMessage();
         email.setTo(recipientAddress);
         email.setSubject(subject);

@@ -2,6 +2,10 @@ package com.springsec.springsecurityexample.configuration;
 
 
 
+import com.springsec.springsecurityexample.events.OnRegistrationCompleteEvent;
+import com.springsec.springsecurityexample.model.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 
@@ -10,16 +14,18 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import javax.mail.Message;
+import javax.mail.Multipart;
+import javax.mail.Session;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.util.Properties;
 
 @Configuration
 public class EmailConfiguration {
-
 
     @Value("${spring.mail.host}")
     private String mailServerHost;
@@ -33,18 +39,20 @@ public class EmailConfiguration {
     @Value("${spring.mail.password}")
     private String mailServerPassword;
 
-//    @Value("${spring.mail.properties.mail.smtp.auth}")
-//    private String mailServerAuth;
-//
-//    @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
-//    private String mailServerStartTls;
-//
-//    @Value("${spring.mail.templates.path}")
-//    private String mailTemplatesPath;
+    @Value("${spring.mail.properties.mail.smtp.auth}")
+    private String mailServerAuth;
+
+    @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
+    private String mailServerStartTls;
+
+
 
     @Bean
     public JavaMailSender getJavaMailSender() {
+
+
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+
 
         mailSender.setHost(mailServerHost);
         mailSender.setPort(mailServerPort);
@@ -54,12 +62,14 @@ public class EmailConfiguration {
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
-//        props.put("mail.smtp.auth", mailServerAuth);
-//        props.put("mail.smtp.starttls.enable", mailServerStartTls);
+        props.put("mail.smtp.auth", mailServerAuth);
+        props.put("mail.smtp.starttls.enable", mailServerStartTls);
         props.put("mail.debug", "true");
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
 
         return mailSender;
     }
+
 
     @Bean
     public SimpleMailMessage templateSimpleMessage() {

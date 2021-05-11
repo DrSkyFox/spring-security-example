@@ -27,8 +27,7 @@ import java.util.Calendar;
 public class RegistrationController {
 
     @Autowired
-    private IUserService userService;
-
+    private final IUserService userService;
 
     @Autowired
     private ApplicationEventPublisher eventPublisher;

@@ -20,8 +20,6 @@ public class UserService implements IUserService {
     @Autowired
     private VerificationTokenRepository verificationTokenRepository;
 
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @Override
     public User registerNewUser(User user) throws EmailExistsException {
