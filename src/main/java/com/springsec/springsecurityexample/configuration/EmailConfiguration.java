@@ -33,14 +33,14 @@ public class EmailConfiguration {
     @Value("${spring.mail.password}")
     private String mailServerPassword;
 
-    @Value("${spring.mail.properties.mail.smtp.auth}")
-    private String mailServerAuth;
-
-    @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
-    private String mailServerStartTls;
-
-    @Value("${spring.mail.templates.path}")
-    private String mailTemplatesPath;
+//    @Value("${spring.mail.properties.mail.smtp.auth}")
+//    private String mailServerAuth;
+//
+//    @Value("${spring.mail.properties.mail.smtp.starttls.enable}")
+//    private String mailServerStartTls;
+//
+//    @Value("${spring.mail.templates.path}")
+//    private String mailTemplatesPath;
 
     @Bean
     public JavaMailSender getJavaMailSender() {
@@ -54,8 +54,8 @@ public class EmailConfiguration {
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", mailServerAuth);
-        props.put("mail.smtp.starttls.enable", mailServerStartTls);
+//        props.put("mail.smtp.auth", mailServerAuth);
+//        props.put("mail.smtp.starttls.enable", mailServerStartTls);
         props.put("mail.debug", "true");
 
         return mailSender;
@@ -76,15 +76,15 @@ public class EmailConfiguration {
         return templateEngine;
     }
 
-    @Bean
-    public ITemplateResolver thymeleafClassLoaderTemplateResolver() {
-        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-        templateResolver.setPrefix(mailTemplatesPath + "/");
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode("HTML");
-        templateResolver.setCharacterEncoding("UTF-8");
-        return templateResolver;
-    }
+//    @Bean
+//    public ITemplateResolver thymeleafClassLoaderTemplateResolver() {
+//        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+//        templateResolver.setPrefix(mailTemplatesPath + "/");
+//        templateResolver.setSuffix(".html");
+//        templateResolver.setTemplateMode("HTML");
+//        templateResolver.setCharacterEncoding("UTF-8");
+//        return templateResolver;
+//    }
 
 //    @Bean
 //    public ITemplateResolver thymeleafFilesystemTemplateResolver() {
