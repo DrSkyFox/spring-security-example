@@ -62,7 +62,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         email.setTo(recipientAddress);
         email.setSubject(subject);
         email.setText("Please open the following URL to verify your account: \r\n" + confirmationUrl);
-        email.setFrom(env.getProperty("support.email"));
+        email.setFrom(env.getProperty("spring.mail.fromAdress"));
         return email;
     }
 

@@ -1,6 +1,7 @@
-package com.springsec.springsecurityexample.configuration;
+package com.springsec.springsecurityexample.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
@@ -9,8 +10,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class SimpleEmailExampleController {
+
+
     @Autowired
-    public JavaMailSender emailSender;
+    private JavaMailSender emailSender;
+
+    @Autowired
+    private Environment env;
 
     @ResponseBody
     @RequestMapping("/sendmail")
@@ -19,8 +25,8 @@ public class SimpleEmailExampleController {
         // Create a Simple MailMessage.
         SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setTo("");
-        message.setFrom("");
+        message.setTo(env.getProperty("spring.mail.tesAddressTo"));
+        message.setFrom(env.getProperty("spring.mail.fromAdress"));
         message.setSubject("Test Simple Email");
         message.setText("Hello, Im testing Simple Email");
 
