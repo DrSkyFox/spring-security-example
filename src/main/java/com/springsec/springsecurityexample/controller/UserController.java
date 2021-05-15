@@ -4,6 +4,7 @@ import javax.validation.Valid;
 
 import com.springsec.springsecurityexample.model.User;
 import com.springsec.springsecurityexample.persists.UserRepository;
+import com.springsec.springsecurityexample.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -18,23 +19,22 @@ import java.util.Calendar;
 
 
 @Controller
-@RequestMapping("/")
 public class UserController {
 
-    private final UserRepository userRepository;
-
     @Autowired
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private final IUserService userService;
+
+    public UserController(IUserService userService) {
+        this.userService = userService;
     }
 
-    // API
+// API
 
-    @RequestMapping
-    public ModelAndView list() {
-        Iterable<User> users = this.userRepository.findAll();
-        return new ModelAndView("home", "users", users);
-    }
+//    @RequestMapping
+//    public ModelAndView list() {
+//        Iterable<User> users = userService.findAll();
+//        return new ModelAndView("home", "users", users);
+//    }
 
 
     @RequestMapping("{id}")
@@ -48,14 +48,14 @@ public class UserController {
             return new ModelAndView("users/form", "formErrors", result.getAllErrors());
         }
         user.setCreated(Calendar.getInstance());
-        user = this.userRepository.save(user);
+        user = userService.save(user);
         redirect.addFlashAttribute("globalMessage", "Successfully created a new user");
         return new ModelAndView("redirect:/{user.id}", "user.id", user.getId());
     }
 
     @RequestMapping(value = "delete/{id}")
     public ModelAndView delete(@PathVariable("id") Long id) {
-        this.userRepository.deleteById(id);
+        userService.deleteById(id);
         return new ModelAndView("redirect:/");
     }
 

@@ -1,7 +1,9 @@
 package com.springsec.springsecurityexample.serviceimpl;
 
+import com.springsec.springsecurityexample.model.PasswordResetToken;
 import com.springsec.springsecurityexample.model.User;
 import com.springsec.springsecurityexample.model.VerificationToken;
+import com.springsec.springsecurityexample.persists.PasswordResetTokenRepository;
 import com.springsec.springsecurityexample.persists.UserRepository;
 import com.springsec.springsecurityexample.persists.VerificationTokenRepository;
 import com.springsec.springsecurityexample.service.IUserService;
@@ -14,12 +16,24 @@ import org.springframework.stereotype.Service;
 public class UserService implements IUserService {
 
 
-    @Autowired
-    private UserRepository repository;
+
+    private final UserRepository repository;
+
+    private final VerificationTokenRepository verificationTokenRepository;
+
+    private final PasswordResetTokenRepository passwordTokenRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
+
 
     @Autowired
-    private VerificationTokenRepository verificationTokenRepository;
-
+    public UserService(UserRepository repository, VerificationTokenRepository verificationTokenRepository, PasswordResetTokenRepository passwordTokenRepository, PasswordEncoder passwordEncoder) {
+        this.repository = repository;
+        this.verificationTokenRepository = verificationTokenRepository;
+        this.passwordTokenRepository = passwordTokenRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public User registerNewUser(User user) throws EmailExistsException {
@@ -66,6 +80,36 @@ public class UserService implements IUserService {
         return repository.findByEmail(email);
     }
 
+    @Override
+    public void createPasswordResetTokenForUser(User user, String token) {
+        final PasswordResetToken myToken = new PasswordResetToken(token, user);
+        passwordTokenRepository.save(myToken);
+    }
 
+    @Override
+    public PasswordResetToken getPasswordResetToken(String token) {
+        return passwordTokenRepository.findByToken(token);
+    }
 
+    @Override
+    public void changeUserPassword(User user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        repository.save(user);
+    }
+
+    @Override
+    public User save(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        return repository.save(user);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    public Iterable<User> findAll() {
+        return repository.findAll();
+    }
 }

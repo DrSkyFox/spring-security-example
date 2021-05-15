@@ -20,12 +20,12 @@
     <tr>
         <td>
           <div>
-              <span sec:authorize="isAuthenticated()" style="display: inline-block;">
+              <div sec:authorize="isAuthenticated()">
                   <th:block th:replace="users/footer :: footer"/>
-              </span>
-              <span sec:authorize="isAnonymous()" style="display: inline-block;">
+              </div>
+              <div sec:authorize="!isAuthenticated()" >
                   <th:block th:replace="users/footer :: login"/>
-              </span>
+              </div>
           </div>
         </td>
         <td>

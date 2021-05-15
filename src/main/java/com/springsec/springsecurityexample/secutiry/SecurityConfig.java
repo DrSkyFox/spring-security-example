@@ -17,27 +17,29 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth,
-                                LssUserDetailsService userDetailsService,
-                                PasswordEncoder passwordEncoder) throws Exception { // @formatter:off
-        auth.
-                inMemoryAuthentication().passwordEncoder(passwordEncoder()).
-                withUser("root").password(passwordEncoder().encode("toot")).
-                roles("SUPER_ADMIN");
+    public void authConfigure(AuthenticationManagerBuilder auth,
+                              LssUserDetailsService userDetailService,
+                              PasswordEncoder passwordEncoder) throws Exception {
+        auth.inMemoryAuthentication()
+                .withUser("1")
+                .password(passwordEncoder.encode("1"))
+                .roles("SUPER_ADMIN");
 
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
+        provider.setUserDetailsService(userDetailService);
         provider.setPasswordEncoder(passwordEncoder);
-        auth.authenticationProvider(provider);
 
-    } // @formatter:on
+        auth.authenticationProvider(provider);
+    }
+
+     // @formatter:on
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception { // @formatter:off
         http
                 .authorizeRequests()
-                .antMatchers("/signup", "/reg", "/sendmail").permitAll()
+                .antMatchers("/signup", "/reg", "/sendmail", "/forgotPassword").permitAll()
                 .antMatchers("/delete/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
 
@@ -51,10 +53,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         ;
     } // @formatter:on
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
 
 

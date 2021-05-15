@@ -3,11 +3,12 @@ package com.springsec.springsecurityexample.events;
 import com.springsec.springsecurityexample.model.User;
 import org.springframework.context.ApplicationEvent;
 
-public class OnRegistrationCompleteEvent extends ApplicationEvent implements EmailEvents {
-    private final String appUrl;
-    private final User user;
+public class OnForgotPasswordEvent extends ApplicationEvent implements EmailEvents {
 
-    public OnRegistrationCompleteEvent(final User user, final String appUrl) {
+    private User user;
+    private String appUrl;
+
+    public OnForgotPasswordEvent(final User user, final String appUrl) {
         super(user);
         this.user = user;
         this.appUrl = appUrl;
@@ -15,11 +16,13 @@ public class OnRegistrationCompleteEvent extends ApplicationEvent implements Ema
 
     @Override
     public User getUser() {
-        return null;
+        return user;
     }
 
     @Override
     public String getURL() {
-        return null;
+        return appUrl;
     }
 }
+
+

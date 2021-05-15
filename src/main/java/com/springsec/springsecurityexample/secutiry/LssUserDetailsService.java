@@ -18,10 +18,12 @@ public class LssUserDetailsService implements UserDetailsService {
 
     private static final String ROLE_USER = "ROLE_USER";
 
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
-
-
+    public LssUserDetailsService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     private Collection<? extends GrantedAuthority> getAuthorities(String role) {
         return Arrays.asList(new SimpleGrantedAuthority(role));
