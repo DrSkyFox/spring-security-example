@@ -60,7 +60,7 @@ public class RegistrationController {
             user.setEnabled(false);
             logger.info("New User is {}", user);
             final User registered = userService.registerNewUser(new User(user));
-            logger.info("Saved to DB");
+            logger.info("Saved to DB:  {}", registered.toString());
             final String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
             logger.info("Registration event");
             eventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, appUrl));
@@ -72,6 +72,7 @@ public class RegistrationController {
         return new ModelAndView("redirect:/login");
     }
 
+    @RequestMapping(value = "/registrationConfirm")
     public ModelAndView confirmRegistration(final Model model,
                                             @RequestParam("token") final String token,
                                             final RedirectAttributes redirectAttributes) {
@@ -116,16 +117,20 @@ public class RegistrationController {
     @RequestMapping(value = "/user/resetPassword", method = RequestMethod.POST)
     @ResponseBody
     public ModelAndView resetPassword(final HttpServletRequest request, @RequestParam("email") final String userEmail, final RedirectAttributes redirectAttributes) {
+        logger.info("User request reset password by email {}", userEmail);
         final User user = userService.findUserByEmail(userEmail);
+        logger.info("User is {}", user.toString());
         if (user != null) {
             final String token = UUID.randomUUID()
                     .toString();
+            logger.info("Token for reset {}", token);
             userService.createPasswordResetTokenForUser(user, token);
+            logger.info("Token saved to DB");
             final String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
-
+            logger.info("URL : {}", appUrl);
             logger.info("ForgotPassword event");
             eventPublisher.publishEvent(new OnForgotPasswordEvent(user, appUrl));
-
+            logger.info("event is published");
         }
 
         redirectAttributes.addFlashAttribute("message", "You should receive an Password Reset Email shortly");

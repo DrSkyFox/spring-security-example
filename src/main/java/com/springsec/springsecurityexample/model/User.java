@@ -12,11 +12,13 @@ import javax.validation.constraints.NotEmpty;
 @Table(name = "users")
 public class User {
 
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 64)
+    @Column(length = 64, unique = true)
     private String email;
 
     @Column(length = 512)

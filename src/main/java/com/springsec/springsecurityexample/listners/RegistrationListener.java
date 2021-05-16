@@ -39,11 +39,12 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
     @Override
     public void onApplicationEvent(final OnRegistrationCompleteEvent event) {
+        logger.info("Registration event start: event {}", event.toString());
         this.confirmRegistration(event);
     }
 
     private void confirmRegistration(final OnRegistrationCompleteEvent event) {
-        logger.info("User registration complete. Send confirm message to email: {}");
+        logger.info("User registration complete. Send confirm message to email: {}", event.toString());
         final User user = event.getUser();
         final String token = UUID.randomUUID()
             .toString();

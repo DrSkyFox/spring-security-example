@@ -28,7 +28,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailService);
         provider.setPasswordEncoder(passwordEncoder);
-
         auth.authenticationProvider(provider);
     }
 
@@ -39,7 +38,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception { // @formatter:off
         http
                 .authorizeRequests()
-                .antMatchers("/signup", "/reg", "/sendmail", "/forgotPassword").permitAll()
+                .antMatchers(
+                        "/signup",
+                        "/reg",
+                        "/sendmail",
+                        "/forgotPassword*",
+                        "/user/resetPassword*",
+                        "/user/changePassword*",
+                        "/user/savePassword*",
+                        "/badUser",
+                        "/registrationConfirm*").permitAll()
                 .antMatchers("/delete/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
 
